@@ -57,15 +57,24 @@ class TestBooksCollector:
         actual_result = collector_w_books.get_books_genre()
         assert actual_result == expected_result
 
-    def test_get_books_for_children_success(self):
-        collector = BooksCollector()
-        collector.add_new_book(book_names[0])
-        collector.set_book_genre(book_names[0], genre_names[1])
-        assert collector.get_book_genre(book_names[0]) not in genre_age_rating
+    @pytest.mark.parametrize(
+        'book_name, genre, result',
+        [
+            (book_names[0], genre_names[1], 1),
+            (book_names[1], genre_names[0], 0)
+        ],
+        ids=[
 
-    def test_get_books_for_children_fail(self, collector_w_books):
-        collector_w_books.set_book_genre(book_names[0], genre_names[0])
-        assert collector_w_books.get_book_genre(book_names[0]) in genre_age_rating
+            'Add a book for children',
+            'Add a book not for children'
+        ]
+    )
+    def test_get_books_for_children_success(self, book_name, genre, result):
+        collector = BooksCollector()
+        collector.add_new_book(book_name)
+        collector.set_book_genre(book_name, genre)
+        len_get_books_for_children = len(collector.get_books_for_children())
+        assert len_get_books_for_children == result
 
     @pytest.mark.parametrize(
         'book_name, result',
