@@ -53,7 +53,9 @@ class TestBooksCollector:
 
     def test_get_books_genre_success(self, collector_w_books):
         collector_w_books.set_book_genre(book_names[0], genre_names[0])
-        assert collector_w_books.get_books_genre()
+        expected_result = {book_names[0]: genre_names[0]}
+        actual_result = collector_w_books.get_books_genre()
+        assert actual_result == expected_result
 
     def test_get_books_for_children_success(self):
         collector = BooksCollector()
